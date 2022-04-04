@@ -1,7 +1,6 @@
 package com.cakecrypto.batch.job;
 
 import com.cakecrypto.batch.configuration.AutoWiringSpringBeanJobFactory;
-import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
@@ -9,9 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +17,6 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
 @Configuration
 @EnableAutoConfiguration
 public class JobBuilderConfig {
@@ -32,11 +25,6 @@ public class JobBuilderConfig {
 
     @Autowired
     private ApplicationContext applicationContext;
-
-    @PostConstruct
-    public void init() {
-        logger.info("Hello world from Spring...");
-    }
 
     @Bean
     public SpringBeanJobFactory springBeanJobFactory() {
@@ -51,7 +39,7 @@ public class JobBuilderConfig {
     public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job) {
 
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
-        schedulerFactory.setConfigLocation(new ClassPathResource("application.properties"));
+        schedulerFactory.setConfigLocation(new ClassPathResource("schedule.properties"));
 
         logger.debug("Setting the Scheduler up");
         schedulerFactory.setJobFactory(springBeanJobFactory());
@@ -68,7 +56,7 @@ public class JobBuilderConfig {
     public JobDetailFactoryBean jobDetail() {
 
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(SampleJob.class);
+        jobDetailFactory.setJobClass(CurrencyJob.class);
         jobDetailFactory.setName("Qrtz_Job_Detail");
         jobDetailFactory.setDescription("Invoke Sample Job service...");
         jobDetailFactory.setDurability(true);

@@ -1,6 +1,6 @@
 package com.cakecrypto.batch.job;
 
-import com.cakecrypto.batch.service.SampleJobService;
+import com.cakecrypto.batch.service.CurrencyJobService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SampleJob implements Job {
+public class CurrencyJob implements Job {
+
     @Autowired
-    private SampleJobService jobService;
+    private CurrencyJobService currencyJobService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        jobService.executeSampleJob();
+        currencyJobService.executeCurrencyJob();
     }
 }

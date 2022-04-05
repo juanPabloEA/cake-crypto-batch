@@ -15,6 +15,5 @@ public class CurrencyJobServiceImpl implements CurrencyJobService {
     @Override
     public void executeCurrencyJob() {
         CoinMarketCapEntity coinMarketCapEntity = coinMarketCap.getLatestCryptoCurrency();
-        System.out.println(coinMarketCapEntity.toString());
     }
 }

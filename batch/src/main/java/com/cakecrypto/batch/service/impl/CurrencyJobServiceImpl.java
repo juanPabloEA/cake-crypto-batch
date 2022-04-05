@@ -1,5 +1,6 @@
 package com.cakecrypto.batch.service.impl;
 
+import com.cakecrypto.batch.entity.CoinMarketCapEntity;
 import com.cakecrypto.batch.service.CoinMarketCap;
 import com.cakecrypto.batch.service.CurrencyJobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ public class CurrencyJobServiceImpl implements CurrencyJobService {
 
     @Override
     public void executeCurrencyJob() {
-        coinMarketCap.getLatestCryptoCurrency();
+        CoinMarketCapEntity coinMarketCapEntity = coinMarketCap.getLatestCryptoCurrency();
+        System.out.println(coinMarketCapEntity.toString());
     }
 }

@@ -1,7 +1,9 @@
 package com.cakecrypto.batch.service.impl;
 
 import com.cakecrypto.batch.constants.CoinMarketCapProperties;
+import com.cakecrypto.batch.entity.CoinMarketCapEntity;
 import com.cakecrypto.batch.service.CoinMarketCap;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
@@ -27,47 +29,42 @@ public class CoinMarketCapImpl implements CoinMarketCap {
     CoinMarketCapProperties coinMarketCapProperties;
 
     @Override
-    public void getLatestCryptoCurrency() {
+    public CoinMarketCapEntity getLatestCryptoCurrency() {
         String uri = coinMarketCapProperties.getUrl().getLatest();
-        List<NameValuePair> paratmers = new ArrayList<NameValuePair>();
-        paratmers.add(new BasicNameValuePair("start","1"));
-        paratmers.add(new BasicNameValuePair("limit","5000"));
-        paratmers.add(new BasicNameValuePair("convert","USD"));
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("start","1"));
+        parameters.add(new BasicNameValuePair("limit","30"));
+        parameters.add(new BasicNameValuePair("convert","USD"));
+        parameters.add(new BasicNameValuePair("sort","price"));
+        parameters.add(new BasicNameValuePair("cryptocurrency_type","coins"));
 
         try {
-            String result = makeAPICall(uri, paratmers);
-            System.out.println(result);
+            String result = makeAPICall(uri, parameters);
+            ObjectMapper om = new ObjectMapper();
+            return om.readValue(result, CoinMarketCapEntity.class);
         } catch (IOException e) {
-            System.out.println("Error: cannont access content - " + e.toString());
+            System.out.println("Error: cannot access content - " + e);
         } catch (URISyntaxException e) {
-            System.out.println("Error: Invalid URL " + e.toString());
+            System.out.println("Error: Invalid URL " + e);
         }
+        return null;
     }
 
-    public String makeAPICall(String uri, List<NameValuePair> parameters)
+    private String makeAPICall(String uri, List<NameValuePair> parameters)
             throws URISyntaxException, IOException {
-        String response_content = "";
-
         URIBuilder query = new URIBuilder(uri);
         query.addParameters(parameters);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpGet request = new HttpGet(query.build());
-
         request.setHeader(HttpHeaders.ACCEPT, "application/json");
         request.addHeader("X-CMC_PRO_API_KEY", coinMarketCapProperties.getKey());
 
-        CloseableHttpResponse response = client.execute(request);
-
-        try {
+        try (CloseableHttpResponse response = client.execute(request)) {
             System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
-            response_content = EntityUtils.toString(entity);
             EntityUtils.consume(entity);
-        } finally {
-            response.close();
+            return EntityUtils.toString(entity);
         }
-
-        return response_content;
     }
 }

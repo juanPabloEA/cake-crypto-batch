@@ -1,6 +1,8 @@
 package com.cakecrypto.batch.service;
 
+import com.cakecrypto.batch.entity.CoinMarketCapEntity;
+
 public interface CoinMarketCap {
 
-    void getLatestCryptoCurrency();
+    CoinMarketCapEntity getLatestCryptoCurrency();
 }

@@ -34,9 +34,6 @@ public class CoinMarketCapImpl implements CoinMarketCap {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("start","1"));
         parameters.add(new BasicNameValuePair("limit","30"));
-        parameters.add(new BasicNameValuePair("convert","USD"));
-        parameters.add(new BasicNameValuePair("sort","price"));
-        parameters.add(new BasicNameValuePair("cryptocurrency_type","coins"));
 
         try {
             String result = makeAPICall(uri, parameters);

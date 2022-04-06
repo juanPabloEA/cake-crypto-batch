@@ -2,7 +2,7 @@ package com.cakecrypto.batch.service.impl;
 
 import com.cakecrypto.batch.constants.CoinMarketCapProperties;
 import com.cakecrypto.batch.entity.CoinMarketCapEntity;
-import com.cakecrypto.batch.service.CoinMarketCap;
+import com.cakecrypto.batch.service.CoinMarketCapService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CoinMarketCapImpl implements CoinMarketCap {
+public class CoinMarketCapServiceImpl implements CoinMarketCapService {
 
     @Autowired
     CoinMarketCapProperties coinMarketCapProperties;

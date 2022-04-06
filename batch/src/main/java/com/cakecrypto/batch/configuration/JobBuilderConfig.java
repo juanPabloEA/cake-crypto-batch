@@ -1,6 +1,6 @@
-package com.cakecrypto.batch.job;
+package com.cakecrypto.batch.configuration;
 
-import com.cakecrypto.batch.configuration.AutoWiringSpringBeanJobFactory;
+import com.cakecrypto.batch.job.CurrencyJob;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;

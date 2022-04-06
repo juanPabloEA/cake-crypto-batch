@@ -20,6 +20,5 @@ public class CurrencyJobServiceImpl implements CurrencyJobService {
     public void executeCurrencyJob() {
         CoinMarketCapEntity coinMarketCapEntity = coinMarketCap.getLatestCryptoCurrency();
         List<CryptoCurrencyDTO> cryptoCurrencyDTO = CryptoCurrencyDTOMapper.mapCoinMarketCapEntityToCryptoCurrencyDTO(coinMarketCapEntity);
-
     }
 }

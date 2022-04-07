@@ -34,10 +34,12 @@ public class CoinMarketCapServiceImpl implements CoinMarketCapService {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("start","1"));
         parameters.add(new BasicNameValuePair("limit","30"));
+        parameters.add(new BasicNameValuePair("convert","USD"));
 
         try {
             String result = makeAPICall(uri, parameters);
             ObjectMapper om = new ObjectMapper();
+            System.out.println(result);
             return om.readValue(result, CoinMarketCapEntity.class);
         } catch (IOException e) {
             System.out.println("Error: cannot access content - " + e);
@@ -49,6 +51,8 @@ public class CoinMarketCapServiceImpl implements CoinMarketCapService {
 
     private String makeAPICall(String uri, List<NameValuePair> parameters)
             throws URISyntaxException, IOException {
+        String response_content = "";
+
         URIBuilder query = new URIBuilder(uri);
         query.addParameters(parameters);
 
@@ -57,11 +61,17 @@ public class CoinMarketCapServiceImpl implements CoinMarketCapService {
         request.setHeader(HttpHeaders.ACCEPT, "application/json");
         request.addHeader("X-CMC_PRO_API_KEY", coinMarketCapProperties.getKey());
 
-        try (CloseableHttpResponse response = client.execute(request)) {
+        CloseableHttpResponse response = client.execute(request);
+
+        try {
             System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
+            response_content = EntityUtils.toString(entity);
             EntityUtils.consume(entity);
-            return EntityUtils.toString(entity);
+        } finally {
+            response.close();
         }
+
+        return response_content;
     }
 }

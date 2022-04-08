@@ -16,8 +16,8 @@ public class CryptoCurrencyRepoImpl extends AbstractFirestoreRepository<CryptoCu
 
     @Override
     public void saveAll(List<CryptoCurrency> cryptoCurrencyList) {
-        for(CryptoCurrency crypto : cryptoCurrencyList) {
-            this.save(crypto);
+        for(CryptoCurrency crypto : cryptoCurrencyList){
+            save(crypto);
         }
     }
 }
